@@ -1,23 +1,44 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useState, useEffect } from 'react';
+import __ from 'lodash';
 
 interface IProps {
   onConfirm: (qNumber: string) => void;
+  errorInfo?: string;
 }
 
-export const Search = ({ onConfirm }: IProps) => {
+//qq正则
+const Regex = /^[1-9][0-9]{4,14}/;
+
+export const Search = ({ onConfirm, errorInfo }: IProps) => {
+  const [errorMsg, setError] = useState(errorInfo);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     const val = e.target.value;
     onConfirm(val);
+    //qq号合法，调用接口
+    if (Regex.test(val)) {
+      onConfirm(val);
+      setError('');
+    } else {
+      setError(!val ? '' : '请输入合法qq号');
+    }
   };
+
+  useEffect(() => {
+    errorInfo && setError(errorInfo);
+  }, [errorInfo]);
 
   return (
     <div className="search-wrapper">
       <h2>QQ号查询</h2>
       <div>
         <label htmlFor="qq">QQ:</label>
-        <input placeholder="请输入您的qq号" onChange={handleChange} />
+        <input
+          placeholder="请输入您的qq号"
+          onChange={__.throttle(handleChange, 2000)}
+        />
       </div>
+      {errorMsg && <div className="error-info">{errorMsg}</div>}
     </div>
   );
 };
