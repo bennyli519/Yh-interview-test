@@ -15,8 +15,12 @@ export const SearchResult = ({ info }: IProps) => {
     <div className="search-result-wrapper">
       <img className="result-avatar" alt="Avatar" src={info?.qlogo} />
       <div className="result-info-wrapper">
-        <p className="info-title">{info?.name}</p>
-        <p className="info-desc">{info?.qq}</p>
+        <p className="info-title" title={info?.name}>
+          {info?.name}
+        </p>
+        <p data-testid="desc" className="info-desc">
+          {info?.qq}
+        </p>
       </div>
     </div>
   );

@@ -24,10 +24,6 @@ export const Search = ({ onConfirm, errorInfo }: IProps) => {
     }
   };
 
-  useEffect(() => {
-    errorInfo && setError(errorInfo);
-  }, [errorInfo]);
-
   return (
     <div className="search-wrapper">
       <h2>QQ号查询</h2>
@@ -35,10 +31,10 @@ export const Search = ({ onConfirm, errorInfo }: IProps) => {
         <label htmlFor="qq">QQ:</label>
         <input
           placeholder="请输入您的qq号"
-          onChange={__.throttle(handleChange, 2000)}
+          onChange={__.throttle(handleChange, 1000)}
         />
       </div>
-      {errorMsg && <div className="error-info">{errorMsg}</div>}
+      {errorMsg && <div className="error-info">{errorMsg || errorInfo}</div>}
     </div>
   );
 };
